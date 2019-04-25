@@ -14,16 +14,17 @@ app.use(cookieParser());
 
 /* ------------------------------------------------------------------- */
 
-const redis = require('redis');
 const favicon = require('serve-favicon');
 const session = require('express-session');
+const redisPlugin = require('./plugin/redis');
 const RedisStore = require('connect-redis')(session);
-const redisClient = redis.createClient(6379, '127.0.0.1');
+const redisClient = redisPlugin({ port: 6379,  host: '127.0.0.1' });
 const user = require('./middleware/user');
+
 app.use(session({
   name: 'hdm_sid',
-  store: new db,
-  secret: 'secret',
+  store: new RedisStore({ client: redisClient }),
+  secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
   resave: false,
   saveUninitialized: true
 }));

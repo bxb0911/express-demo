@@ -3,7 +3,6 @@ const User = require('../lib/user');
 module.exports = (req, res, next) => {
   // 从会话中取出已登录用户的ID
   const uid = req.session.uid;
-  console.log(uid);
   if (!uid) return next();
   // 从Redis中取出已登录用户的数据
   User.get(uid, (err, user) => {
