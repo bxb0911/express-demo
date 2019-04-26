@@ -5,15 +5,15 @@ class MembersController extends Controller {
     super();
     return this.wrapHandler(this[opts.ctx]);
   }
-  member(req, res, next) {
+  members(req, res, next) {
     console.log('members');
     res.send('members~');
   }
-  beforeHandler() {
+  local() {
     super.beforeHandler();
     console.log('childbefore');
   }
-  afterHandler() {
+  login() {
     super.afterHandler();
     console.log('childafter');
   }

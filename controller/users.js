@@ -27,8 +27,13 @@ class UsersController extends Controller {
       }
     });
   }
-  login(req, res) {
-    res.render('login', { title: 'Login' });
+  login(req, res, next) {
+    const uid = req.session.uid;
+    if (uid) {
+      res.redirect('/');
+    } else {
+      res.render('login', { title: 'Login' });
+    }
   }
   logout(req, res, next) {
     const uid = req.session.uid;
