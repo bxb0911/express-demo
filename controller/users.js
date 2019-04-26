@@ -10,12 +10,17 @@ class UsersController extends Controller {
     res.render('login', { title: 'Hi~' });
   }
   submit(req, res, next) {
-    const data = req.body;
-    User.authenticate(data['user[name]'], data['user[pass]'], (err, user) => {
+    const data = req.body.user;
+    // 请求后台接口获取对应的 uid
+    User.authenticate(data.name, data.pass, (err, userData) => {
       if (err) return next(err);
-      if (user) {
-        req.session.uid = user.id;
-        res.redirect('/');
+      if (userData) {
+        let user = new User(userData);
+        user.save(err => {
+          if (err) return next(err);
+          req.session.uid = user.id;
+          res.redirect('/');
+        });
       } else {
         res.error('Sorry! invalid credentials. ');
         res.redirect('back');
@@ -25,11 +30,17 @@ class UsersController extends Controller {
   login(req, res) {
     res.render('login', { title: 'Login' });
   }
-  logout(req, res) {
-    req.session.destroy((err) => {
-      if (err) throw err;
-      res.redirect('/');
-    })
+  logout(req, res, next) {
+    const uid = req.session.uid;
+    const store = req.sessionStore;
+    if (!uid) return next();
+    User.remove(uid, err => {
+      if (err) return next(err);
+      store.destroy(req.sessionID, err => {
+        if (err) throw err;
+        res.redirect('/');
+      });
+    });
   }
 }
 

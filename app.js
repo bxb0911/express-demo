@@ -1,6 +1,7 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const app = express();
 
@@ -8,8 +9,8 @@ const app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 /* ------------------------------------------------------------------- */
@@ -25,6 +26,7 @@ app.use(session({
   name: 'hdm_sid',
   store: new RedisStore({ client: redisClient }),
   secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
+  unsert: 'destroy',
   resave: false,
   saveUninitialized: true
 }));
