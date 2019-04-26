@@ -1,13 +1,18 @@
-const Controller = require('../lib/controller');
-
-class IndexController extends Controller {
-  constructor(opts) {
-    super();
-    return this.wrapHandler(this[opts.ctx]);
+module.exports = options => {
+  const { wrapper, ctrl } = options;
+  const before = (req, res, next) => {
+    console.log('before');
   }
-  index(req, res, next) {
-    res.render('index', { title: 'Home', id: req.id });
+  const after = () => {
+    console.log('aaa')
   }
-}
+  const indexController = {
+    index(req, res, next) {
+      res.render('index', { title: 'Home', id: req.id });
+      console.log('index');
+      next();
+    }
+  }
 
-module.exports = IndexController;
+  return wrapper(indexController[ctrl], before, after);
+};

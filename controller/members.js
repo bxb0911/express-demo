@@ -1,22 +1,17 @@
-const Controller = require('../lib/controller');
-
-class MembersController extends Controller {
-  constructor(opts) {
-    super();
-    return this.wrapHandler(this[opts.ctx]);
+module.exports = options => {
+  const { wrapper, ctrl } = options;
+  const before = (req, res, next) => {
+    console.log('before');
   }
-  members(req, res, next) {
-    console.log('members');
-    res.send('members~');
+  const after = () => {
+    console.log('aaa');
   }
-  local() {
-    super.beforeHandler();
-    console.log('childbefore');
+  const membersController = {
+    members(req, res, next) {
+      res.send('members~');
+      console.log('index');
+      next();
+    }
   }
-  login() {
-    super.afterHandler();
-    console.log('childafter');
-  }
-}
-
-module.exports = MembersController;
+  return wrapper(membersController[ctrl], before, after);
+};
