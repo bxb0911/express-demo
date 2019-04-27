@@ -16,6 +16,8 @@ module.exports = options => {
     },
     submit(req, res, next) {
       const data = req.body.user;
+      // res.set('Access-Control-Allow-Origin', 'http://localhost:8080')
+      // res.set('Access-Control-Allow-Credentials', 'true')
       // 请求后台接口获取对应的 uid
       User.authenticate(data.name, data.pass, (err, userData) => {
         if (err) return next(err);
@@ -24,7 +26,12 @@ module.exports = options => {
           user.save(err => {
             if (err) return next(err);
             req.session.uid = user.id;
-            res.redirect('/');
+            console.log(req.session.uid)
+            res.json({
+              errNo: 0,
+              errStr: 'success'
+            })
+            // res.redirect('/');
           });
         } else {
           res.error('Sorry! invalid credentials. ');

@@ -15,5 +15,5 @@ exports.routes = [
       { path: '/login', name: 'submit', method: 'post' },
       { path: '/logout', name: 'logout' }
     ]},
-  { path: '/members', name: 'members' }
+  { path: '/order', name: 'order' }
 ]

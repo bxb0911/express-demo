@@ -2,6 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const app = express();
 
@@ -10,6 +11,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
+// 允许所有跨域请求
+app.use(cors({ origin: /http:\/\/localhost:8080$/ }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
