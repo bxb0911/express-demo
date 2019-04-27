@@ -12,7 +12,7 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 // 允许所有跨域请求
-app.use(cors({ origin: /http:\/\/localhost:8080$/ }));
+app.use(cors({ credentials: true, origin: /http:\/\/localhost:8080$/ }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 

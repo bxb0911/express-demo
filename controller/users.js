@@ -26,12 +26,10 @@ module.exports = options => {
           user.save(err => {
             if (err) return next(err);
             req.session.uid = user.id;
-            console.log(req.session.uid)
             res.json({
               errNo: 0,
               errStr: 'success'
             })
-            // res.redirect('/');
           });
         } else {
           res.error('Sorry! invalid credentials. ');
@@ -59,7 +57,10 @@ module.exports = options => {
         if (err) return next(err);
         store.destroy(req.sessionID, err => {
           if (err) throw err;
-          res.redirect('/');
+          res.json({
+            errNo: 0,
+            errStr: 'success'
+          })
         });
         console.log('logout');
         next();
